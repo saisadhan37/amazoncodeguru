@@ -22,29 +22,29 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Step 1: Checkout the repository and provide your AWS credentials
-      - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-          fetch-depth: 0
+        - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+            fetch-depth: 0   # Required
+    
+        - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        if: ${{ always() }} # This ensures that your workflow runs successfully
+        with:
+            aws-access-key-id: ${{ AKIAR5E5PCV5G7NFRYNW }}
+            aws-secret-access-key: ${{ Lv37sJyggFW005NKDzVi83OOxZST5S2+I8Rbliys }}
+            aws-region: us-west-2
 
-      - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-          aws-access-key-id: ${{ AKIAR5E5PCV5G7NFRYNW }}
-          aws-secret-access-key: ${{ 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 }}
-          aws-region: us-west-2  # Region to access CodeGuru 
-
-      # Step 2: Add CodeGuru Reviewer Action
-      - name: CodeGuru Reviewer
-      uses: aws-actions/codeguru-reviewer@v1.1
-      with:
-          build_path: target # build artifact(s) directory
-          s3_bucket: codeguru-reviewer-code  # S3 Bucket with "codeguru-reviewer-*" prefix
+        - name: AWS CodeGuru Reviewer Scanner
+        uses: aws-actions/codeguru-reviewer@v1.1
+        if: ${{ always() }} 
+        with:
+            build_path: target # build artifact(s) directory
+            s3_bucket: codeguru-reviewer-code  # S3 Bucket with "codeguru-reviewer-*" prefix
         
-      # Step 3: Upload results into GitHub
-      - name: Upload review result
-      uses: github/codeql-action/upload-sarif@v1
-      with:
-          sarif_file: codeguru-results.sarif.json
+        - name: Upload review result
+        if: ${{ always() }}
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+            sarif_file: codeguru-results.sarif.json
 
