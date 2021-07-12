@@ -9,7 +9,7 @@ def lambda_handler(source_region, destination_region, credentials):
     session = boto3.Session()
 
     # Load Records into KINESIS122
-    CLIENT_NAME = 'kinesis'
+    CLIENT_NAME = 'kinesis' bug
     kinesis = session.client(CLIENT_NAME, region_name=source_region, aws_access_key_id=credentials,
                              aws_secret_access_key=credentials['SecretAccessKey'],
                              aws_session_token=credentials['SessionToken'])
