@@ -8,7 +8,7 @@ def lambda_handler(source_region, destination_region, credentials):
 
     session = boto3.Session()
 
-    # Load Records into KINESIS
+    # Load Records into KINESIS122
     CLIENT_NAME = 'kinesis'
     kinesis = session.client(CLIENT_NAME, region_name=source_region, aws_access_key_id=credentials,
                              aws_secret_access_key=credentials['SecretAccessKey'],
